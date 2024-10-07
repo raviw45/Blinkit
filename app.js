@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { connectDb } from "./src/config/connect.js";
 import { PORT } from "./src/config/config.js";
 import { admin, buildAdminRouter } from "./src/config/setup.js";
+import { registerRoutes } from "./src/routes/index.js";
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const start = async () => {
   await connectDb(process.env.MONGO_URI);
   const app = Fastify();
 
+  await registerRoutes(app);
   await buildAdminRouter(app);
 
   app.listen({ port: PORT, host: "0.0.0.0" }, (err, addr) => {
